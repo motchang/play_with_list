@@ -4,13 +4,57 @@
 
 * 落書き帳
 ** ミニバッファ
+
+   eval-expression M-:
+
+   #+BEGIN_SRC emacs-lisp
+   (+ 1 2) ; RET
+   #+END_SRC
+
 *** バッファローカル変数
+
+    変数名や関数名の補完 completion-at-point M-TAB C-M-i
+
 ** Emacs Lisp モード
+
+   #+BEGIN_SRC emacs-lisp
+   (defun factorial (n)
+     (cond
+      ((zerop n) 1)
+      (t (* n (factorial (1- n))))))
+   #+END_SRC
+
 *** 行頭揃え
 *** 関数名と変数名の補完
 *** 式の評価
+
+    式の最後にカーソルを合わせて C-x C-e
+
+   #+BEGIN_SRC emacs-lisp
+   (defun factorial (n)
+     (cond
+      ((zerop n) 1)
+      (t (* n (factorial (1- n)))))) ; C-x C-e
+   #+END_SRC
+
 *** 一括評価
+
+    M-x eval-region
+    M-x eval-current-buffer
+
 ** Lisp Interaction モード
+
+   #+BEGIN_SRC emacs-lisp
+   (defun factorial (n)
+     (cond
+      ((zerop n) 1)
+      (t (* n (factorial (1- n)))))) ; C-j
+   ; => factorial
+
+   (factorial 5) ; C-j
+   ; => 120
+   #+END_SRC
+
 * アトムとセル
 ** アトム
 *** シンボル
