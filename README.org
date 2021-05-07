@@ -1,3 +1,5 @@
+#+STARTUP: showeverything
+
 * Play with List
 
 [[https://www.amazon.co.jp/dp/4756134424][リスト遊び―Emacsで学ぶLispの世界]] の写経用リポジトリ
