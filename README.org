@@ -199,19 +199,193 @@
     ; => t
     #+END_SRC
 
+    セルを作る cons は contruct の略称。
+    cons の仕事はリストの先頭に要素を加えるとも言える。
+
+    #+BEGIN_SRC emacs-lisp
+    (cons 'sherry '(wine port))
+    ; => (sherry wine port)
+    #+END_SRC
 
 
 *** car と cdr
     セルの CAR が参照しているデータを得るには関数 car を使います。
     同様に CDR が刺しているデータを得るには関数 cdr を使います。
 
+    #+BEGIN_SRC emacs-lisp
+    (setq zoo (cons 1 (cons 2 (cons 3 nil))))
+    ; => (1 2 3)
+
+    (car zoo)
+    ; => 1
+
+    (cdr zoo)
+    ; => (2 3)
+
+    (car nil)
+    ; => nil
+
+    (cdr nil)
+    ; => nil
+    #+END_SRC
 
 *** リストのリスト
+    #+BEGIN_SRC emacs-lisp
+    (setq moo (cons 1 (cons 2 nil)))
+    ; => (1 2)
+
+    (setq coo (cons 3 (cons 4 nil)))
+    ; => (3 4)
+
+    (cons moo (cons coo nil))
+    ; => ((1 2) (3 4))
+    #+END_SRC
+
 *** ドット対表記
+    セルの CDR はセルか nil を指す
+    ポインタはなんでも指せるので、CDRはアトムも参照できる
+    ドット対（dotted pair）
+
+    #+BEGIN_SRC emacs-lisp
+    (cons 1 2)
+    ; => (1 . 2)
+
+    ; (1) は (1 . nil) とも表記できる
+    (cons 1 nil)
+    ; => (1)
+
+    ; (1 2 3) は (1 . (2 . (3 . nil))) とも表記できる
+    (cons 1 (cons 2 (cons 3 nil)))
+    ; => (1 2 3)
+
+    #+END_SRC
+
+
 ** 評価とクォート
+
 *** 評価
+    Lispの式の評価とは：
+
+    * 式がアトムならその値を返す
+      * シンボルなら代入されている値を返す
+      * 整数ならその整数を返す
+      * 文字列なら特殊な文字を変換して返す
+    * 式がセルなら関数を呼び出す
+      * リストの大一要素が関数名、それ以外の要素が引数となる
+      * 引数があればそれぞれ評価する
+      * 第１要素のシンボルが示す関数を、評価した引数と共に呼び出す
+
+    #+BEGIN_SRC emacs-lisp
+    (zerop 1)
+    #+END_SRC
+
+    * これはリストなので評価すると関数呼び出しになる
+    * 引数である式 1 を評価
+      * この式は整数なので 1 が返る
+    * zerop を引数 1 と共に呼び出す
+      * zerop は 1 を判定し、0でないので、nilを返す
+
+    #+BEGIN_SRC emacs-lisp
+    (null nil)
+    #+END_SRC
+
+    * この式はリストなので関数呼び出しになる
+      * 引数である nil を評価
+        * この式はシンボルなので、代入されている値を返す。この場合は nil
+    * 関数 null を引数 nil と共に呼び出す
+      * null は nil を判定し、 nil であるので t を返す
+
+    #+BEGIN_SRC emacs-lisp
+    (consp (cons 1 (cons 2 nil)))
+    #+END_SRC
+
+    * この式はリストなので関数呼び出しになる
+    * 引数である (cons 1 (cons 2 nil)) を評価する
+      * これもリストなので関数として呼び出される
+        * 引数である 1 を評価して、値 1 を得る
+        * 同様に式 (cons 2 nil) を評価する
+          * またリストが出てきたので関数呼び出しになる
+            * 引数である 2 を評価し、 2 を得る
+            * 引数である nil を評価し、 nil を得る
+          * cons が 2 と nil と共に呼ばれ、(2) を返す
+      * 外側の cons が 1 と (2) と共に呼ばれ リスト (1 2) を作成して返す
+    * consp が引数 (1 2) と共に呼ばれ、空でないリストなので consp は t を返す
+
+    例外的に引数の一部あるいは全部があらかじめ評価されない関数がある => 特殊関数（special form）と呼ばれる
+
 *** クォート
+
+    #+BEGIN_SRC emacs-lisp
+    (consp (1 2))
+    ; => Debugger entered--Lisp error: (invalid-function 1)
+    #+END_SRC
+
+    * リストなので関数呼び出しになる
+      * 引数である (1 2) を評価する
+        * リストなので関数呼び出しになる
+          * 引数 2 を評価する
+          * 関数 1 を 引数 2 と共に呼び出そうとする
+
+    #+BEGIN_SRC emacs-lisp
+    (quote (1 2))
+    ; => (1 2)
+    #+END_SRC
+
+    シングルクォートを使う場合
+
+    #+BEGIN_SRC emacs-lisp
+    '(1 2)
+    ; => (1 2)
+    #+END_SRC
+
+    関数 quote で式を囲むこと、およびシングルクォートを式の前に付けることをクォート（quote）すると言う
+
+    #+BEGIN_SRC emacs-lisp
+    (setq dog 5)
+
+    dog
+    ; => 5
+
+    'dog
+    ; => dog
+    #+END_SRC
+
+    setq も特殊関数。第２引数は評価されるが、第１引数は評価されない。＝＞第１引数に指定するシンボルをクォートする必要がない。
+    setq は set quote の省略語で、第１引数を関数自身でクォートすることを意味している。
+
+    リストをクォートした場合、リストの中身も評価されない。
+
+    #+BEGIN_SRC emacs-lisp
+    (setq dog 1)
+    (setq pig 2)
+
+    (cons dog (cons pig nil))
+    ; => (1 2)
+
+    '(dog pig)
+    ; => (dog pig)
+    #+END_SRC
+
+    評価される前と後で形が変わらない t、nil、整数、特殊文字を含まない文字列は、クォートしても意味が変わらない
+
+    #+BEGIN_SRC emacs-lisp
+    (setq zoo '(t nil 18 "dog"))
+    ; => (t nil 18 "dog")
+    #+END_SRC
+
 *** バッククォート
+    クォートするとリスト内の全ての要素を評価しないが、一部の要素を評価して欲しい時にはバッククォートを使う
+
+    #+BEGIN_SRC emacs-lisp
+    (setq dog 1)
+    (setq pig 2)
+
+    '(dog pig)
+    ; => (dog pig)
+    `(,dog pig)
+    ; => (1 pig)
+    #+END_SRC
+
 * 関数遊び
 ** 関数定義
 ** 条件分岐
