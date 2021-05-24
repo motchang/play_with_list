@@ -10,7 +10,7 @@
    eval-expression M-:
 
    #+BEGIN_SRC emacs-lisp
-   (+ 1 2) ; RET
+   (+ 1 2) ;; RET
    #+END_SRC
 
 *** バッファローカル変数
@@ -20,10 +20,10 @@
 ** Emacs Lisp モード
 
    #+BEGIN_SRC emacs-lisp
-   (defun factorial (n)
-     (cond
-      ((zerop n) 1)
-      (t (* n (factorial (1- n))))))
+     (defun factorial (n)
+       (cond
+        ((zerop n) 1)
+        (t (* n (factorial (1- n))))))
    #+END_SRC
 
 *** 行頭揃え
@@ -33,10 +33,10 @@
     式の最後にカーソルを合わせて C-x C-e
 
    #+BEGIN_SRC emacs-lisp
-   (defun factorial (n)
-     (cond
-      ((zerop n) 1)
-      (t (* n (factorial (1- n)))))) ; C-x C-e
+     (defun factorial (n)
+       (cond
+        ((zerop n) 1)
+        (t (* n (factorial (1- n)))))) ;; C-x C-e
    #+END_SRC
 
 *** 一括評価
@@ -47,14 +47,14 @@
 ** Lisp Interaction モード
 
    #+BEGIN_SRC emacs-lisp
-   (defun factorial (n)
-     (cond
-      ((zerop n) 1)
-      (t (* n (factorial (1- n)))))) ; C-j
-   ; => factorial
+     (defun factorial (n)
+       (cond
+        ((zerop n) 1)
+        (t (* n (factorial (1- n)))))) ;; C-j
+     ;; => factorial
 
-   (factorial 5) ; C-j
-   ; => 120
+     (factorial 5) ;; C-j
+     ;; => 120
    #+END_SRC
 
 * アトムとセル
@@ -81,9 +81,9 @@
     値が nil か否かを調べるには、 null という関数を使います。引数が nil なら t, それ以外なら nil を返します
 
     #+BEGIN_SRC emacs-lisp
-    (setq zoo nil)
-    (null zoo)
-    ; => t
+      (setq zoo nil)
+      (null zoo)
+      ;; => t
     #+END_SRC
 
     真偽値を返す関数の名前は p で終わっている
@@ -91,15 +91,15 @@
 
 *** 整数
     #+BEGIN_SRC emacs-lisp
-    12
-    -34
+      12
+      -34
     #+END_SRC
 
 *** 文字列
     #+BEGIN_SRC emacs-lisp
-    "dog"
-    "-24"
-    "\n"
+      "dog"
+      "-24"
+      "\n"
     #+END_SRC
 
 ** セル
@@ -125,86 +125,86 @@
          1                         2                        3
 
     #+BEGIN_SRC emacs-lisp
-    (1 2 3)
+      (1 2 3)
     #+END_SRC
 
 *** cons
     cons はセルを一つ用意して、第一引数をそのセルのCARで刺し、第二引数をCDRで参照します
     #+BEGIN_SRC emacs-lisp
-    (cons 1 nil)
-    ; => (1)
+      (cons 1 nil)
+      ;; => (1)
     #+END_SRC
 
     空のリストの先頭に要素を加えるという意味を強調するために、nil を () と書いても構わない
     #+BEGIN_SRC emacs-lisp
-    (cons 1 ())
-    ; => (1)
+      (cons 1 ())
+      ;; => (1)
     #+END_SRC
 
     (1 2 3) というリストを作成するためには、次の様に三回 cons を使う
     #+BEGIN_SRC emacs-lisp
-    (cons 1 (cons 2 (cons 3 nil)))
-    ; => (1 2 3)
+      (cons 1 (cons 2 (cons 3 nil)))
+      ;; => (1 2 3)
     #+END_SRC
 
     この様に使うので cons セルと呼ばれることがある
 
     #+BEGIN_SRC emacs-lisp
-    (consp 1)
-    ; => nil
+      (consp 1)
+      ;; => nil
 
-    (setq zoo (cons 1 nil))
-    ; => (1)
+      (setq zoo (cons 1 nil))
+      ;; => (1)
 
-    (consp zoo)
-    ; => t
+      (consp zoo)
+      ;; => t
     #+END_SRC
 
     アトムかどうかを調べる
 
     #+BEGIN_SRC emacs-lisp
-    (atom 1)
-    ; => t
+      (atom 1)
+      ;; => t
 
-    (setq zoo (cons 1 nil))
-    ; => (1)
+      (setq zoo (cons 1 nil))
+      ;; => (1)
 
-    (atom zoo)
-    ; => nil
+      (atom zoo)
+      ;; => nil
     #+END_SRC
 
     nil は空リストですが、セルではありません
 
     #+BEGIN_SRC emacs-lisp
-    (atom nil)
-    ; => t
+      (atom nil)
+      ;; => t
 
-    (consp nil)
-    ; => nil
+      (consp nil)
+      ;; => nil
     #+END_SRC
 
     リストか否かを判定する関数 listp
 
     #+BEGIN_SRC emacs-lisp
-    (listp nil)
-    ; => t
+      (listp nil)
+      ;; => t
 
-    (listp 1)
-    ; => nil
+      (listp 1)
+      ;; => nil
 
-    (setq zoo (cons 1 nil))
-    ; => (1)
+      (setq zoo (cons 1 nil))
+      ;; => (1)
 
-    (listp zoo)
-    ; => t
+      (listp zoo)
+      ;; => t
     #+END_SRC
 
     セルを作る cons は contruct の略称。
     cons の仕事はリストの先頭に要素を加えるとも言える。
 
     #+BEGIN_SRC emacs-lisp
-    (cons 'sherry '(wine port))
-    ; => (sherry wine port)
+      (cons 'sherry '(wine port))
+      ;; => (sherry wine port)
     #+END_SRC
 
 
@@ -213,32 +213,32 @@
     同様に CDR が刺しているデータを得るには関数 cdr を使います。
 
     #+BEGIN_SRC emacs-lisp
-    (setq zoo (cons 1 (cons 2 (cons 3 nil))))
-    ; => (1 2 3)
+      (setq zoo (cons 1 (cons 2 (cons 3 nil))))
+      ;; => (1 2 3)
 
-    (car zoo)
-    ; => 1
+      (car zoo)
+      ;; => 1
 
-    (cdr zoo)
-    ; => (2 3)
+      (cdr zoo)
+      ;; => (2 3)
 
-    (car nil)
-    ; => nil
+      (car nil)
+      ;; => nil
 
-    (cdr nil)
-    ; => nil
+      (cdr nil)
+      ;; => nil
     #+END_SRC
 
 *** リストのリスト
     #+BEGIN_SRC emacs-lisp
-    (setq moo (cons 1 (cons 2 nil)))
-    ; => (1 2)
+      (setq moo (cons 1 (cons 2 nil)))
+      ;; => (1 2)
 
-    (setq coo (cons 3 (cons 4 nil)))
-    ; => (3 4)
+      (setq coo (cons 3 (cons 4 nil)))
+      ;; => (3 4)
 
-    (cons moo (cons coo nil))
-    ; => ((1 2) (3 4))
+      (cons moo (cons coo nil))
+      ;; => ((1 2) (3 4))
     #+END_SRC
 
 *** ドット対表記
@@ -247,16 +247,16 @@
     ドット対（dotted pair）
 
     #+BEGIN_SRC emacs-lisp
-    (cons 1 2)
-    ; => (1 . 2)
+      (cons 1 2)
+      ;; => (1 . 2)
 
-    ; (1) は (1 . nil) とも表記できる
-    (cons 1 nil)
-    ; => (1)
+      ;; (1) は (1 . nil) とも表記できる
+      (cons 1 nil)
+      ;; => (1)
 
-    ; (1 2 3) は (1 . (2 . (3 . nil))) とも表記できる
-    (cons 1 (cons 2 (cons 3 nil)))
-    ; => (1 2 3)
+      ;; (1 2 3) は (1 . (2 . (3 . nil))) とも表記できる
+      (cons 1 (cons 2 (cons 3 nil)))
+      ;; => (1 2 3)
 
     #+END_SRC
 
@@ -276,7 +276,7 @@
       * 第１要素のシンボルが示す関数を、評価した引数と共に呼び出す
 
     #+BEGIN_SRC emacs-lisp
-    (zerop 1)
+      (zerop 1)
     #+END_SRC
 
     * これはリストなので評価すると関数呼び出しになる
@@ -286,7 +286,7 @@
       * zerop は 1 を判定し、0でないので、nilを返す
 
     #+BEGIN_SRC emacs-lisp
-    (null nil)
+      (null nil)
     #+END_SRC
 
     * この式はリストなので関数呼び出しになる
@@ -296,7 +296,7 @@
       * null は nil を判定し、 nil であるので t を返す
 
     #+BEGIN_SRC emacs-lisp
-    (consp (cons 1 (cons 2 nil)))
+      (consp (cons 1 (cons 2 nil)))
     #+END_SRC
 
     * この式はリストなので関数呼び出しになる
@@ -316,8 +316,8 @@
 *** クォート
 
     #+BEGIN_SRC emacs-lisp
-    (consp (1 2))
-    ; => Debugger entered--Lisp error: (invalid-function 1)
+      (consp (1 2))
+      ;; => Debugger entered--Lisp error: (invalid-function 1)
     #+END_SRC
 
     * リストなので関数呼び出しになる
@@ -327,27 +327,27 @@
           * 関数 1 を 引数 2 と共に呼び出そうとする
 
     #+BEGIN_SRC emacs-lisp
-    (quote (1 2))
-    ; => (1 2)
+      (quote (1 2))
+      ;; => (1 2)
     #+END_SRC
 
     シングルクォートを使う場合
 
     #+BEGIN_SRC emacs-lisp
-    '(1 2)
-    ; => (1 2)
+      '(1 2)
+      ;; => (1 2)
     #+END_SRC
 
     関数 quote で式を囲むこと、およびシングルクォートを式の前に付けることをクォート（quote）すると言う
 
     #+BEGIN_SRC emacs-lisp
-    (setq dog 5)
+      (setq dog 5)
 
-    dog
-    ; => 5
+      dog
+      ;; => 5
 
-    'dog
-    ; => dog
+      'dog
+      ;; => dog
     #+END_SRC
 
     setq も特殊関数。第２引数は評価されるが、第１引数は評価されない。＝＞第１引数に指定するシンボルをクォートする必要がない。
@@ -356,40 +356,207 @@
     リストをクォートした場合、リストの中身も評価されない。
 
     #+BEGIN_SRC emacs-lisp
-    (setq dog 1)
-    (setq pig 2)
+      (setq dog 1)
+      (setq pig 2)
 
-    (cons dog (cons pig nil))
-    ; => (1 2)
+      (cons dog (cons pig nil))
+      ;; => (1 2)
 
-    '(dog pig)
-    ; => (dog pig)
+      '(dog pig)
+      ;; => (dog pig)
     #+END_SRC
 
     評価される前と後で形が変わらない t、nil、整数、特殊文字を含まない文字列は、クォートしても意味が変わらない
 
     #+BEGIN_SRC emacs-lisp
-    (setq zoo '(t nil 18 "dog"))
-    ; => (t nil 18 "dog")
+      (setq zoo '(t nil 18 "dog"))
+      ;; => (t nil 18 "dog")
     #+END_SRC
 
 *** バッククォート
     クォートするとリスト内の全ての要素を評価しないが、一部の要素を評価して欲しい時にはバッククォートを使う
 
     #+BEGIN_SRC emacs-lisp
-    (setq dog 1)
-    (setq pig 2)
+      (setq dog 1)
+      (setq pig 2)
 
-    '(dog pig)
-    ; => (dog pig)
-    `(,dog pig)
-    ; => (1 pig)
+      '(dog pig)
+      ;; => (dog pig)
+      `(,dog pig)
+      ;; => (1 pig)
     #+END_SRC
 
 * 関数遊び
+
 ** 関数定義
+    #+BEGIN_SRC emacs-lisp
+      (defun 関数名 (仮引数１ 仮引数２)
+        式１
+        式２
+        ．．．)
+    #+END_SRC
+
+    defun
+
+    * 第一引数は関数名である。関数名はシンボルの規則に従う。
+    * 第二引数は仮引数のリストである。仮引数の名前はシンボルの規則に従って自由に決定できる。仮引数は０個以上であり、０個の場合は単に空リストを書く。
+    * 残りの引数が関数の本体になる。本体は１つ以上の式である。この関数が呼び出されると、本体の式を順に評価していき、最後に評価した値を返す。
+
+    #+BEGIN_SRC emacs-lisp
+      (defun 1+ (n)
+        (+ n 1))
+      ;; => 1+
+    #+END_SRC
+
+    #+BEGIN_SRC emacs-lisp
+      (defun 1- (n)
+        (- n 1))
+      ;; => 1-
+    #+END_SRC
+
 ** 条件分岐
+    #+BEGIN_SRC emacs-lisp
+      (cond
+        (条件式１ 式１a 式１ｂ ．．．)
+        (条件式２ 式２a 式２ｂ ．．．)
+        (条件式３ 式３a 式３ｂ ．．．)
+      )
+    #+END_SRC
+
+    * 条件式１が真の時、リストの残りが評価される
+    * cond は条件式を上から順に評価する
+    * cond が返す値は、最後に評価された式の値
+      * 真になる条件式が見つからない場合は nil を返す
+    * C言語で例えると必ず break される switch 文
+
+    #+BEGIN_SRC emacs-lisp
+      ;; 引数がセルであるかを調べる consp
+      ;; セル以外はアトム、アトム以外はセル
+      (defun Consp (x)
+        (cond
+        ((atom x) nil) ;; atom の場合は nil が返る
+        (t t))) ;; 1番目の式に一致しない場合は t が返る
+    #+END_SRC
+
+    #+BEGIN_SRC emacs-lisp
+      (defun Consp (x)
+        (null (atom x)))
+    #+END_SRC
+
+    #+BEGIN_SRC emacs-lisp
+      (atom nil)
+      ;; => t
+
+      (null t)
+      ;; => nil
+
+      (Consp nil)
+      ;; => nil
+
+
+      (atom ())
+      ;; => t
+
+      (null t)
+      ;; => nil
+
+      (Consp ())
+      ;; => nil
+
+
+      (atom '(1 2))
+      ;; => nil
+
+      (null nil)
+      ;; => t
+
+      (Consp '(1, 2))
+      ;; => t
+    #+END_SRC
+
+    listp
+
+    * 引数が nil なら t を返す
+    * 引数がセルなら t を返す
+    * そうでなければ nil を返す
+
+    #+BEGIN_SRC emacs-lisp
+      (defun Listp (x)
+        (cond
+         ((null x) t)
+         ((consp x) t)
+         (t nil)))
+    #+END_SRC
+
 ** eq
+   eq は2つの引数が同一のデータを指しているか検査する
+   Lisp の世界では全てのデータはポインタで指される。
+   Lisp の世界では、ある値の整数は1つしか存在しない
+
+   #+begin_src emacs-lisp
+     (setq x 2)
+     (setq y 2)
+     (eq x y)
+     ;; => t
+
+     (setq z y)
+     (eq z y)
+     ;; -> t
+
+     (setq x 'dog)
+     (setq y 'dog)
+     (eq x y)
+     ;; => t
+
+     (setq z y)
+     (eq z y)
+     ;; => t
+   #+end_src
+
+   Lisp の世界では、t と nil も一つしか存在しない
+   しかし、文字列は無数に存在できる
+
+   #+begin_src emacs-lisp
+     (setq x "dog")
+     (setq y "dog")
+     (eq x y)
+     ;; => nil
+
+     (setq z y)
+     (eq y z)
+     ;; t
+   #+end_src
+
+   文字列と同様にセルも無数に存在できる
+
+   #+begin_src emacs-lisp
+     (setq x '(1 2))
+     (setq y '(1 2))
+     (eq x y)
+     ;; => nil
+
+     (setq z y)
+     (eq y z)
+     ;; => t
+   #+end_src
+
+   * 変数とはポインタを格納する箱である
+   * 変数へデータを代入することは、そのデータへのポインタを格納することである
+   * 変数の評価とは、ポインタが指しているデータを取り出すことである
+   * 変数から定数への代入とは、ポインタをコピーすることである
+
+   #+begin_src emacs-lisp
+     ;; nil であるか判定する関数 null
+     (defun Null (x)
+       (cond
+        ((eq x nil) t)
+        (t nill)))
+
+     ;; このように簡略化できる
+     (defun Null (x)
+       (eq x nil))
+   #+end_src
+
 ** 整数の比較
 ** and と or
 * 再帰
